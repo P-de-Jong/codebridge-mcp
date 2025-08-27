@@ -1,0 +1,10 @@
+node_modules
+dist
+out
+*.min.js
+*.bundle.js
+*.d.ts
+bun.lockb
+*.vsix
+.vscode-test
+coverage

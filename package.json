@@ -1,0 +1,165 @@
+{
+  "name": "codebridge-mcp",
+  "displayName": "CodeBridge MCP",
+  "description": "Advanced multi-instance MCP server with intelligent VSCode coordination",
+  "version": "0.2.0",
+  "publisher": "codebridge-mcp",
+  "icon": "logo.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/P-de-Jong/codebridge-mcp.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "CodeBridge MCP",
+      "properties": {
+        "codebridge-mcp.server.autoStart": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically start MCP server on extension activation"
+        },
+        "codebridge-mcp.server.port": {
+          "type": "number",
+          "default": 9100,
+          "description": "Preferred port for MCP HTTP server (will find available port)"
+        },
+        "codebridge-mcp.debug.enableLogging": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable debug logging to file for troubleshooting"
+        },
+        "codebridge-mcp.coordination.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable multi-instance coordination"
+        },
+        "codebridge-mcp.coordination.masterPort": {
+          "type": "number",
+          "default": 9100,
+          "description": "Port for master MCP server"
+        },
+        "codebridge-mcp.coordination.workerPortRange": {
+          "type": "array",
+          "default": [9101, 9199],
+          "description": "Port range for worker instances"
+        },
+        "codebridge-mcp.coordination.heartbeatInterval": {
+          "type": "number",
+          "default": 5000,
+          "description": "Worker heartbeat interval (ms)"
+        },
+        "codebridge-mcp.coordination.mode": {
+          "type": "string",
+          "enum": ["auto", "master", "worker", "standalone"],
+          "default": "auto",
+          "description": "Force specific coordination mode"
+        },
+        "codebridge-mcp.failover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic master failover"
+        },
+        "codebridge-mcp.failover.electionTimeout": {
+          "type": "number",
+          "default": 5000,
+          "description": "Election timeout in milliseconds"
+        },
+        "codebridge-mcp.failover.healthCheckInterval": {
+          "type": "number",
+          "default": 3000,
+          "description": "Master health check frequency"
+        },
+        "codebridge-mcp.failover.quorumSize": {
+          "type": "number",
+          "default": 1,
+          "description": "Minimum workers needed for election (0 = majority)"
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "codebridge-mcp.start",
+        "title": "Start Server",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.stop",
+        "title": "Stop Server",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.status",
+        "title": "Show Server Status",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.toggleDebug",
+        "title": "Toggle Debug Logging",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.showCoordinationStatus",
+        "title": "Show Coordination Status",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.forceMasterMode",
+        "title": "Force Master Mode",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.listInstances",
+        "title": "List Connected Instances",
+        "category": "CodeBridge MCP"
+      },
+      {
+        "command": "codebridge-mcp.resetCoordination",
+        "title": "Reset Coordination",
+        "category": "CodeBridge MCP"
+      }
+    ]
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "compile": "tsc -p ./",
+    "build": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "package": "npm run build && vsce package",
+    "vscode:prepublish": "npm run build",
+    "watch": "tsc -watch -p ./",
+    "pretest": "tsc -p ./ && eslint src",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "format": "prettier --write src/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.4",
+    "cors": "^2.8.0",
+    "express": "^4.18.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/cors": "^2.8.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.80.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "latest",
+    "esbuild": "^0.25.9",
+    "eslint": "^9.32.0",
+    "typescript": "^5.9.2"
+  }
+}

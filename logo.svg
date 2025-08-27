@@ -1,0 +1,94 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradient for the bridge -->
+    <linearGradient id="bridgeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#007ACC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0084FF;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for VSCode instances -->
+    <linearGradient id="vscodeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E1E1E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2D2D30;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Gradient for AI/MCP connection -->
+    <radialGradient id="mcpGradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F7931E;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Drop shadow filter -->
+    <filter id="dropshadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="2" dy="2" result="offset" />
+      <feFlood flood-color="#000000" flood-opacity="0.2"/>
+      <feComposite in2="offset" operator="in"/>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="58" fill="url(#bridgeGradient)" opacity="0.1"/>
+  
+  <!-- VSCode instances (left side) -->
+  <!-- Instance 1 -->
+  <rect x="8" y="25" width="32" height="24" rx="3" fill="url(#vscodeGradient)" filter="url(#dropshadow)"/>
+  <rect x="12" y="29" width="4" height="4" rx="1" fill="#007ACC"/>
+  <rect x="18" y="29" width="18" height="2" rx="1" fill="#CCCCCC"/>
+  <rect x="18" y="33" width="14" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="37" width="16" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="41" width="12" height="2" rx="1" fill="#888888"/>
+  
+  <!-- Instance 2 -->
+  <rect x="8" y="55" width="32" height="24" rx="3" fill="url(#vscodeGradient)" filter="url(#dropshadow)"/>
+  <rect x="12" y="59" width="4" height="4" rx="1" fill="#007ACC"/>
+  <rect x="18" y="59" width="18" height="2" rx="1" fill="#CCCCCC"/>
+  <rect x="18" y="63" width="14" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="67" width="16" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="71" width="12" height="2" rx="1" fill="#888888"/>
+  
+  <!-- Instance 3 -->
+  <rect x="8" y="85" width="32" height="24" rx="3" fill="url(#vscodeGradient)" filter="url(#dropshadow)"/>
+  <rect x="12" y="89" width="4" height="4" rx="1" fill="#007ACC"/>
+  <rect x="18" y="89" width="18" height="2" rx="1" fill="#CCCCCC"/>
+  <rect x="18" y="93" width="14" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="97" width="16" height="2" rx="1" fill="#888888"/>
+  <rect x="18" y="101" width="12" height="2" rx="1" fill="#888888"/>
+  
+  <!-- Bridge/Connection lines -->
+  <path d="M 42 37 Q 64 20 78 50" stroke="url(#bridgeGradient)" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 42 67 Q 64 64 76 67" stroke="url(#bridgeGradient)" stroke-width="3" fill="none" opacity="0.8"/>
+  <path d="M 42 97 Q 64 108 78 84" stroke="url(#bridgeGradient)" stroke-width="3" fill="none" opacity="0.8"/>
+  
+  <!-- Central bridge node -->
+  <circle cx="64" cy="67" r="8" fill="url(#bridgeGradient)" filter="url(#dropshadow)"/>
+  <circle cx="64" cy="67" r="4" fill="#FFFFFF" opacity="0.9"/>
+  
+  <!-- MCP/AI connection (right side) - simple orange circle -->
+  <circle cx="94" cy="67" r="18" fill="url(#mcpGradient)" filter="url(#dropshadow)"/>
+  
+  <!-- Connection indicators -->
+  <circle cx="42" cy="37" r="2" fill="url(#bridgeGradient)"/>
+  <circle cx="42" cy="67" r="2" fill="url(#bridgeGradient)"/>
+  <circle cx="42" cy="97" r="2" fill="url(#bridgeGradient)"/>
+  <circle cx="78" cy="50" r="2" fill="url(#mcpGradient)"/>
+  <circle cx="78" cy="84" r="2" fill="url(#mcpGradient)"/>
+  
+  <!-- Data flow indicators -->
+  <circle cx="52" cy="32" r="1" fill="#0084FF" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="76" cy="32" r="1" fill="#0084FF" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+  </circle>
+  <circle cx="52" cy="102" r="1" fill="#0084FF" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="1s"/>
+  </circle>
+  <circle cx="76" cy="102" r="1" fill="#0084FF" opacity="0.7">
+    <animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" begin="1.5s"/>
+  </circle>
+</svg>
