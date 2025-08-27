@@ -14,13 +14,21 @@ export function registerReferencesTools(
       description:
         "Find all references to a symbol (variable, function, class, etc.) at a specific position. Essential for code refactoring, understanding code dependencies, and finding all usages of a symbol across the entire workspace. Uses VSCode's intelligent language server analysis. Prefer this for finding usages of classes, methods, functions etc.",
       inputSchema: {
-        uri: z.string().describe('File URI containing the symbol'),
+        uri: z
+          .string()
+          .optional()
+          .describe(
+            'File URI containing the symbol (optional, uses active editor if not provided)',
+          ),
         position: z
           .object({
             line: z.number(),
             character: z.number(),
           })
-          .describe('Position of the symbol (0-based)'),
+          .optional()
+          .describe(
+            'Position of the symbol (0-based, uses current selection if not provided)',
+          ),
         includeDeclaration: z
           .boolean()
           .optional()
@@ -29,8 +37,51 @@ export function registerReferencesTools(
     },
     async ({ uri, position, includeDeclaration = true }) => {
       try {
-        const fileUri = vscode.Uri.parse(uri);
-        const pos = new vscode.Position(position.line, position.character);
+        let fileUri: vscode.Uri;
+        let pos: vscode.Position;
+
+        // If URI is provided, use it, otherwise fall back to active editor
+        if (uri && position) {
+          fileUri = vscode.Uri.parse(uri);
+          pos = new vscode.Position(position.line, position.character);
+        } else {
+          const activeEditor = vscode.window.activeTextEditor;
+          if (!activeEditor) {
+            return {
+              content: [
+                {
+                  type: 'text',
+                  text: 'No URI provided and no active editor available.',
+                },
+              ],
+            };
+          }
+          fileUri = activeEditor.document.uri;
+          // Use provided position if available, otherwise use current selection
+          if (position) {
+            pos = new vscode.Position(position.line, position.character);
+          } else {
+            pos = activeEditor.selection.active;
+          }
+        }
+
+        // Check if the file is within the current workspace
+        const isInWorkspace = vscode.workspace.getWorkspaceFolder(fileUri);
+        if (!isInWorkspace) {
+          // Try to open the document first to see if it's accessible
+          try {
+            await vscode.workspace.openTextDocument(fileUri);
+          } catch (openError) {
+            return {
+              content: [
+                {
+                  type: 'text',
+                  text: `Cannot access file: ${fileUri.toString()}. The file must be part of the currently opened workspace for reference finding to work. Current workspace: ${vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || 'none'}`,
+                },
+              ],
+            };
+          }
+        }
 
         const references = await vscode.commands.executeCommand<
           vscode.Location[]
@@ -41,7 +92,7 @@ export function registerReferencesTools(
             content: [
               {
                 type: 'text',
-                text: `No references found for symbol at line ${position.line + 1}, character ${position.character + 1}.`,
+                text: `No references found for symbol at line ${pos.line + 1}, character ${pos.character + 1}.`,
               },
             ],
           };

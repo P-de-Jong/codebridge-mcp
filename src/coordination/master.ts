@@ -546,7 +546,11 @@ export class MasterCoordinator extends McpCoordinator {
     this.logger.info('Starting aggregation from all workers', {
       tool,
       workerCount: workers.length,
-      workers: workers.map(w => ({ id: w.instanceId, name: w.workspaceName, port: w.port }))
+      workers: workers.map((w) => ({
+        id: w.instanceId,
+        name: w.workspaceName,
+        port: w.port,
+      })),
     });
 
     // Collect results from all workers
@@ -584,9 +588,12 @@ export class MasterCoordinator extends McpCoordinator {
     this.logger.info('Aggregation results collected', {
       tool,
       totalPromises: promises.length,
-      fulfilledResults: results.filter(r => r.status === 'fulfilled').length,
+      fulfilledResults: results.filter((r) => r.status === 'fulfilled').length,
       validResults: validResults.length,
-      results: validResults.map((r, i) => ({ index: i, hasContent: !!r?.content }))
+      results: validResults.map((r, i) => ({
+        index: i,
+        hasContent: !!r?.content,
+      })),
     });
 
     if (validResults.length === 0) {
@@ -736,14 +743,18 @@ export class MasterCoordinator extends McpCoordinator {
 
     this.logger.debug('Merging workspace results', {
       resultCount: results.length,
-      results: results.map(r => ({ hasContent: !!r?.content?.[0]?.text }))
+      results: results.map((r) => ({ hasContent: !!r?.content?.[0]?.text })),
     });
 
     for (const result of results) {
       if (result?.content?.[0]?.text) {
         const text = result.content[0].text;
         // Extract workspace entries - each result should contain workspace info
-        const workspaceLines = text.split('\n').filter((line: string) => line.startsWith('**') || line.startsWith('  •'));
+        const workspaceLines = text
+          .split('\n')
+          .filter(
+            (line: string) => line.startsWith('**') || line.startsWith('  •'),
+          );
         if (workspaceLines.length > 0) {
           allWorkspaces.push(...workspaceLines);
           totalWorkspaces++;
@@ -762,7 +773,8 @@ export class MasterCoordinator extends McpCoordinator {
       };
     }
 
-    const text = `Available workspaces (${totalWorkspaces} total):\n\n${allWorkspaces.join('\n')}\n\n` +
+    const text =
+      `Available workspaces (${totalWorkspaces} total):\n\n${allWorkspaces.join('\n')}\n\n` +
       `Use the workspace name or path in other tools to target specific workspaces. ` +
       `For context-sensitive tools like get_selection, specify the workspace to get results from that specific instance.`;
 
@@ -777,14 +789,18 @@ export class MasterCoordinator extends McpCoordinator {
 
     this.logger.debug('Merging instance results', {
       resultCount: results.length,
-      results: results.map(r => ({ hasContent: !!r?.content?.[0]?.text }))
+      results: results.map((r) => ({ hasContent: !!r?.content?.[0]?.text })),
     });
 
     for (const result of results) {
       if (result?.content?.[0]?.text) {
         const text = result.content[0].text;
         // Extract instance entries - each result should contain instance info
-        const instanceLines = text.split('\n').filter((line: string) => line.startsWith('**') || line.startsWith('  •'));
+        const instanceLines = text
+          .split('\n')
+          .filter(
+            (line: string) => line.startsWith('**') || line.startsWith('  •'),
+          );
         if (instanceLines.length > 0) {
           allInstances.push(...instanceLines);
           totalInstances++;
@@ -803,7 +819,8 @@ export class MasterCoordinator extends McpCoordinator {
       };
     }
 
-    const text = `Connected instances (${totalInstances} total):\n\n${allInstances.join('\n')}\n\n` +
+    const text =
+      `Connected instances (${totalInstances} total):\n\n${allInstances.join('\n')}\n\n` +
       `Master coordinates all workers and handles tool routing. Workers execute tools within their specific workspaces.`;
 
     return {
@@ -838,7 +855,7 @@ export class MasterCoordinator extends McpCoordinator {
   private async executeGetMasterWorkspace(): Promise<any> {
     // This is called as part of aggregation - return just the master workspace info
     const masterWorkspace = this.getCurrentWorkspaceInfo();
-    
+
     const masterWorkspaceData = {
       instanceId: this.instanceId,
       name: masterWorkspace.name,
@@ -850,14 +867,17 @@ export class MasterCoordinator extends McpCoordinator {
     };
 
     return {
-      content: [{
-        type: 'text',
-        text: `**${masterWorkspaceData.name}** (master)\n` +
-              `  • Path: ${masterWorkspaceData.path}\n` +
-              `  • Instance: ${masterWorkspaceData.instanceId}\n` +
-              `  • Status: ${masterWorkspaceData.status}\n` +
-              `  • Type: ${masterWorkspaceData.workspaceType}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text:
+            `**${masterWorkspaceData.name}** (master)\n` +
+            `  • Path: ${masterWorkspaceData.path}\n` +
+            `  • Instance: ${masterWorkspaceData.instanceId}\n` +
+            `  • Status: ${masterWorkspaceData.status}\n` +
+            `  • Type: ${masterWorkspaceData.workspaceType}`,
+        },
+      ],
     };
   }
 
@@ -865,7 +885,7 @@ export class MasterCoordinator extends McpCoordinator {
     // Return this master's instance info for aggregation
     const uptime = Date.now() - this.state.startedAt;
     const uptimeStr = this.formatUptime(uptime);
-    
+
     const instanceInfo = {
       instanceId: this.instanceId,
       type: 'master',
@@ -879,19 +899,22 @@ export class MasterCoordinator extends McpCoordinator {
     };
 
     return {
-      content: [{
-        type: 'text',
-        text: `**${instanceInfo.instanceId}** (master)\n` +
-              `  • Status: ${instanceInfo.status}\n` +
-              `  • Port: ${instanceInfo.port}\n` +
-              `  • Uptime: ${instanceInfo.uptime}\n` +
-              `  • Version: ${instanceInfo.version}\n` +
-              `  • Connected workers: ${instanceInfo.workerCount}\n` +
-              `  • Started: ${instanceInfo.startedAt}\n` +
-              `  • Total tool calls: ${instanceInfo.performanceMetrics.totalToolCalls}\n` +
-              `  • Success rate: ${(instanceInfo.performanceMetrics.successRate * 100).toFixed(1)}%\n` +
-              `  • Avg response time: ${instanceInfo.performanceMetrics.averageResponseTime.toFixed(0)}ms`
-      }]
+      content: [
+        {
+          type: 'text',
+          text:
+            `**${instanceInfo.instanceId}** (master)\n` +
+            `  • Status: ${instanceInfo.status}\n` +
+            `  • Port: ${instanceInfo.port}\n` +
+            `  • Uptime: ${instanceInfo.uptime}\n` +
+            `  • Version: ${instanceInfo.version}\n` +
+            `  • Connected workers: ${instanceInfo.workerCount}\n` +
+            `  • Started: ${instanceInfo.startedAt}\n` +
+            `  • Total tool calls: ${instanceInfo.performanceMetrics.totalToolCalls}\n` +
+            `  • Success rate: ${(instanceInfo.performanceMetrics.successRate * 100).toFixed(1)}%\n` +
+            `  • Avg response time: ${instanceInfo.performanceMetrics.averageResponseTime.toFixed(0)}ms`,
+        },
+      ],
     };
   }
 
@@ -1113,8 +1136,6 @@ export class MasterCoordinator extends McpCoordinator {
       );
     }
   }
-
-
 
   private updateWorkspaceRouting(worker: WorkerInfo): void {
     this.state.workspaceRouting.set(worker.workspacePath, worker.instanceId);

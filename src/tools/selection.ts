@@ -103,7 +103,10 @@ export function registerSelectionTool(
           }
         }
 
-        const text = `Selected text (lines ${selection.start.line + 1}-${selection.end.line + 1}):\n\n\`\`\`\n${selectedText}\n\`\`\`${contextText}${workspaceContext}`;
+        // Include file URI and position information for tool integration
+        const fileInfo = `\n\n**File:** ${document.uri.toString()}\n**Position:** Line ${selection.start.line + 1}, Character ${selection.start.character + 1}`;
+
+        const text = `Selected text (lines ${selection.start.line + 1}-${selection.end.line + 1}):\n\n\`\`\`\n${selectedText}\n\`\`\`${contextText}${fileInfo}${workspaceContext}`;
 
         return {
           content: [{ type: 'text', text }],

@@ -4,6 +4,16 @@ All notable changes to the CodeBridge MCP extension will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-08-27
+
+### 🔧 Fixed
+
+- **Find References Tool**: Fixed issue where `find_references` tool was resolving to wrong file paths, causing "Unable to resolve nonexistent file" errors
+  - Enhanced selection tool to include current file URI and position information for better integration
+  - Made URI and position parameters optional in references tool with fallback to active editor
+  - Improved error handling and context awareness in both main references tool and coordination layer
+  - References tool now correctly identifies the actual file being worked on instead of using stale URI information
+
 ## [1.0.0] - 2025-08-27 (Stable Release)
 
 ### 🎉 First Stable Release

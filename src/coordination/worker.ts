@@ -882,10 +882,12 @@ export class WorkerCoordinator extends McpCoordinator {
     // Return this worker's workspace info for aggregation
     if (!this.workerInfo) {
       return {
-        content: [{
-          type: 'text',
-          text: 'Worker not initialized'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'Worker not initialized',
+          },
+        ],
       };
     }
 
@@ -899,14 +901,17 @@ export class WorkerCoordinator extends McpCoordinator {
     };
 
     return {
-      content: [{
-        type: 'text',
-        text: `**${workerWorkspaceData.name}** (worker)\n` +
-              `  • Path: ${workerWorkspaceData.path}\n` +
-              `  • Instance: ${workerWorkspaceData.instanceId}\n` +
-              `  • Status: ${workerWorkspaceData.status}\n` +
-              `  • Last seen: ${workerWorkspaceData.lastSeen}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text:
+            `**${workerWorkspaceData.name}** (worker)\n` +
+            `  • Path: ${workerWorkspaceData.path}\n` +
+            `  • Instance: ${workerWorkspaceData.instanceId}\n` +
+            `  • Status: ${workerWorkspaceData.status}\n` +
+            `  • Last seen: ${workerWorkspaceData.lastSeen}`,
+        },
+      ],
     };
   }
 
@@ -914,16 +919,18 @@ export class WorkerCoordinator extends McpCoordinator {
     // Return this worker's instance info for aggregation
     if (!this.workerInfo) {
       return {
-        content: [{
-          type: 'text',
-          text: 'Worker not initialized'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'Worker not initialized',
+          },
+        ],
       };
     }
 
     const uptime = Date.now() - this.workerInfo.registeredAt;
     const uptimeStr = this.formatUptime(uptime);
-    
+
     const instanceInfo = {
       instanceId: this.workerInfo.instanceId,
       type: 'worker',
@@ -939,19 +946,22 @@ export class WorkerCoordinator extends McpCoordinator {
     };
 
     return {
-      content: [{
-        type: 'text',
-        text: `**${instanceInfo.instanceId}** (worker)\n` +
-              `  • Status: ${instanceInfo.status}\n` +
-              `  • Workspace: ${instanceInfo.workspaceName}\n` +
-              `  • Path: ${instanceInfo.workspacePath}\n` +
-              `  • Port: ${instanceInfo.port}\n` +
-              `  • Uptime: ${instanceInfo.uptime}\n` +
-              `  • Version: ${instanceInfo.version}\n` +
-              `  • Capabilities: ${instanceInfo.capabilities.join(', ')}\n` +
-              `  • Last seen: ${instanceInfo.lastSeen}\n` +
-              `  • Registered: ${instanceInfo.registeredAt}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text:
+            `**${instanceInfo.instanceId}** (worker)\n` +
+            `  • Status: ${instanceInfo.status}\n` +
+            `  • Workspace: ${instanceInfo.workspaceName}\n` +
+            `  • Path: ${instanceInfo.workspacePath}\n` +
+            `  • Port: ${instanceInfo.port}\n` +
+            `  • Uptime: ${instanceInfo.uptime}\n` +
+            `  • Version: ${instanceInfo.version}\n` +
+            `  • Capabilities: ${instanceInfo.capabilities.join(', ')}\n` +
+            `  • Last seen: ${instanceInfo.lastSeen}\n` +
+            `  • Registered: ${instanceInfo.registeredAt}`,
+        },
+      ],
     };
   }
 

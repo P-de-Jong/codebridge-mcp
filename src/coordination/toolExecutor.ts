@@ -296,12 +296,37 @@ export class LocalToolExecutor implements ToolExecutor {
   }
 
   private async executeFindReferences(
-    uri: string,
-    position: any,
+    uri?: string,
+    position?: any,
   ): Promise<ToolResult> {
     try {
-      const fileUri = vscode.Uri.parse(uri);
-      const pos = new vscode.Position(position.line, position.character);
+      let fileUri: vscode.Uri;
+      let pos: vscode.Position;
+
+      // If URI is provided, use it, otherwise fall back to active editor
+      if (uri && position) {
+        fileUri = vscode.Uri.parse(uri);
+        pos = new vscode.Position(position.line, position.character);
+      } else {
+        const activeEditor = vscode.window.activeTextEditor;
+        if (!activeEditor) {
+          return {
+            content: [
+              {
+                type: 'text',
+                text: 'No URI provided and no active editor available.',
+              },
+            ],
+          };
+        }
+        fileUri = activeEditor.document.uri;
+        // Use provided position if available, otherwise use current selection
+        if (position) {
+          pos = new vscode.Position(position.line, position.character);
+        } else {
+          pos = activeEditor.selection.active;
+        }
+      }
 
       const references = await vscode.commands.executeCommand<
         vscode.Location[]
@@ -312,7 +337,7 @@ export class LocalToolExecutor implements ToolExecutor {
           content: [
             {
               type: 'text',
-              text: `No references found at position line ${position.line + 1}, character ${position.character + 1} in ${uri}`,
+              text: `No references found at position line ${pos.line + 1}, character ${pos.character + 1} in ${fileUri.toString()}`,
             },
           ],
         };
