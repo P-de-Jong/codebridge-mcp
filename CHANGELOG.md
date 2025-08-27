@@ -4,6 +4,24 @@ All notable changes to the CodeBridge MCP extension will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2025-08-27 (Stable Release)
+
+### 🎉 First Stable Release
+
+This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance coordination and comprehensive VSCode integration.
+
+#### ✅ Production Ready Features
+- **Stable Multi-Instance Coordination**: Thoroughly tested master-worker architecture
+- **Complete Tool Suite**: All 9 MCP tools fully functional and workspace-aware
+- **Robust Failover System**: Automatic leader election with <30-second recovery
+- **Enterprise-Grade Reliability**: Comprehensive error handling and monitoring
+
+#### 🔧 Stability Improvements
+- Enhanced coordination system reliability
+- Improved port conflict resolution
+- Optimized workspace detection and routing
+- Better error recovery and logging
+
 ## [0.2.0] - 2025-08-27 (Initial Release)
 
 ### 🚀 Initial Release Features

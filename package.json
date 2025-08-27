@@ -2,7 +2,7 @@
   "name": "codebridge-mcp",
   "displayName": "CodeBridge MCP",
   "description": "Advanced multi-instance MCP server with intelligent VSCode coordination",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "publisher": "codebridge-mcp",
   "icon": "logo.png",
   "repository": {

@@ -1,6 +1,6 @@
 # CodeBridge MCP
 
-🚀 **Transform your VSCode into a powerful MCP server** - Give AI assistants seamless access to your entire development environment with intelligent multi-instance coordination.
+**Transform your VSCode into a powerful MCP server** - Give AI assistants seamless access to your entire development environment with intelligent multi-instance coordination.
 
 ## 🚀 Quick Setup
 
