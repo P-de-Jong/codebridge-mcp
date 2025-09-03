@@ -50,7 +50,10 @@
         },
         "codebridge-mcp.coordination.workerPortRange": {
           "type": "array",
-          "default": [9101, 9199],
+          "default": [
+            9101,
+            9199
+          ],
           "description": "Port range for worker instances"
         },
         "codebridge-mcp.coordination.heartbeatInterval": {
@@ -60,7 +63,12 @@
         },
         "codebridge-mcp.coordination.mode": {
           "type": "string",
-          "enum": ["auto", "master", "worker", "standalone"],
+          "enum": [
+            "auto",
+            "master",
+            "worker",
+            "standalone"
+          ],
           "default": "auto",
           "description": "Force specific coordination mode"
         },
@@ -160,6 +168,7 @@
     "@vscode/vsce": "latest",
     "esbuild": "^0.25.9",
     "eslint": "^9.32.0",
+    "prettier": "3.6.2",
     "typescript": "^5.9.2"
   }
 }

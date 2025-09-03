@@ -10,7 +10,7 @@ export function registerWorkspaceTools(
     {
       title: 'Get Available Workspaces',
       description:
-        'Get list of all available VSCode workspaces/instances. Shows workspace names, paths, and instance status. Use this to understand which workspaces are available before targeting specific ones with other tools. Essential for multi-workspace development workflows.',
+        'Get list of all available VSCode workspaces/instances. Use this to determine if a workspace belongs to the working directory. Shows workspace names, paths, and instance status. Use this to understand which workspaces are available before targeting specific ones with other tools. Essential for multi-workspace development workflows.',
       inputSchema: {},
     },
     async (args) => {

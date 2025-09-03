@@ -19,9 +19,15 @@ export function registerDiagnosticsTool(
           .describe(
             'Optional file URI to get diagnostics for. If not provided, returns diagnostics for all open files.',
           ),
+        severity: z
+          .enum(['error', 'warning', 'info', 'hint'])
+          .optional()
+          .describe(
+            'Optional severity filter. Only return diagnostics of this severity level. If not provided, returns all diagnostics.',
+          ),
       },
     },
-    async ({ uri }) => {
+    async ({ uri, severity }) => {
       try {
         let uris: vscode.Uri[] = [];
 
@@ -35,12 +41,34 @@ export function registerDiagnosticsTool(
           uris = allDiagnostics.map(([uri]) => uri);
         }
 
+        const severityFilter = severity
+          ? {
+              error: vscode.DiagnosticSeverity.Error,
+              warning: vscode.DiagnosticSeverity.Warning,
+              info: vscode.DiagnosticSeverity.Information,
+              hint: vscode.DiagnosticSeverity.Hint,
+            }[severity]
+          : undefined;
+
         const fileDiagnostics = uris
           .map((fileUri) => {
             const fileDiags = vscode.languages.getDiagnostics(fileUri);
+            const filteredDiags =
+              severityFilter !== undefined
+                ? fileDiags.filter((diag) => {
+                    // Handle non-standard severity values (e.g., C# compiler warnings with severity 4)
+                    // Map them to VSCode standard values for filtering
+                    const severityNumber = diag.severity as number;
+                    let mappedSeverity = diag.severity;
+                    if (severityNumber === 4) {
+                      mappedSeverity = vscode.DiagnosticSeverity.Warning;
+                    }
+                    return mappedSeverity === severityFilter;
+                  })
+                : fileDiags;
             return {
               uri: fileUri.toString(),
-              diagnostics: fileDiags.map((diag) => ({
+              diagnostics: filteredDiags.map((diag) => ({
                 range: {
                   start: {
                     line: diag.range.start.line,
@@ -85,13 +113,17 @@ export function registerDiagnosticsTool(
           };
         }
 
-        const text = `Found diagnostics for ${fileDiagnostics.length} files (${totalCount} total):\n\n${fileDiagnostics
+        const text = `Found diagnostics for ${
+          fileDiagnostics.length
+        } files (${totalCount} total):\n\n${fileDiagnostics
           .map(
             (fileDiag) =>
               `**${fileDiag.uri}**:\n${fileDiag.diagnostics
                 .map(
                   (diag) =>
-                    `- Line ${diag.range.start.line + 1}: ${severityMap[diag.severity]} ${diag.message}${diag.source ? ` (${diag.source})` : ''}`,
+                    `- Line ${diag.range.start.line + 1}: ${
+                      severityMap[diag.severity]
+                    } ${diag.message}${diag.source ? ` (${diag.source})` : ''}`,
                 )
                 .join('\n')}`,
           )
@@ -102,7 +134,9 @@ export function registerDiagnosticsTool(
         };
       } catch (error) {
         throw new Error(
-          `Failed to get diagnostics: ${error instanceof Error ? error.message : String(error)}`,
+          `Failed to get diagnostics: ${
+            error instanceof Error ? error.message : String(error)
+          }`,
         );
       }
     },
