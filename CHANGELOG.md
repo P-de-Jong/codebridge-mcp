@@ -4,6 +4,12 @@ All notable changes to the CodeBridge MCP extension will be documented in this f
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-09-03
+
+### ✨ Enhanced
+
+- **Diagnostics Tool**: Added severity filter functionality to diagnostics tool for better error/warning filtering
+
 ## [1.0.1] - 2025-08-27
 
 ### 🔧 Fixed
@@ -21,12 +27,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance coordination and comprehensive VSCode integration.
 
 #### ✅ Production Ready Features
+
 - **Stable Multi-Instance Coordination**: Thoroughly tested master-worker architecture
 - **Complete Tool Suite**: All 9 MCP tools fully functional and workspace-aware
 - **Robust Failover System**: Automatic leader election with <30-second recovery
 - **Enterprise-Grade Reliability**: Comprehensive error handling and monitoring
 
 #### 🔧 Stability Improvements
+
 - Enhanced coordination system reliability
 - Improved port conflict resolution
 - Optimized workspace detection and routing
@@ -37,6 +45,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 ### 🚀 Initial Release Features
 
 #### Core Functionality
+
 - **HTTP MCP Server**: Standards-compliant MCP server with HTTP transport
 - **Embedded Architecture**: Single-process design with no external dependencies
 - **Auto Port Discovery**: Automatic available port detection on ports 9100-9199
@@ -44,6 +53,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - **Custom Logo**: Professional SVG logo showing multi-instance coordination
 
 #### 🎯 Multi-Instance Coordination System
+
 - **Master-Worker Architecture**: Automatic detection and role assignment for multiple VSCode instances
 - **Leader Election**: Raft-inspired consensus algorithm with deterministic tiebreaking
 - **Intelligent Tool Routing**: Workspace-aware routing with fallback mechanisms
@@ -51,6 +61,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - **Split-Brain Prevention**: Deterministic conflict resolution system
 
 #### 🛠️ Available MCP Tools
+
 - `get_workspaces`: LLM-driven workspace discovery and targeting
 - `get_diagnostics`: LSP diagnostics with workspace targeting (errors, warnings, hints)
 - `get_open_files`: Currently open files with metadata across all instances
@@ -58,10 +69,11 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - `get_selection`: Selected text and context with workspace targeting
 - `find_references`: Cross-workspace symbol references
 - `find_definition`: Symbol definitions with workspace routing
-- `get_workspace_symbols`: Symbol search across all workspaces  
+- `get_workspace_symbols`: Symbol search across all workspaces
 - `search_files`: File search with workspace filtering
 
 #### 🎛️ Commands
+
 - `CodeBridge MCP: Start Server`: Manual server startup
 - `CodeBridge MCP: Stop Server`: Stop MCP server
 - `CodeBridge MCP: Show Server Status`: Display server information
@@ -72,6 +84,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - `CodeBridge MCP: Reset Coordination`: Restart coordination system
 
 #### ⚙️ Configuration
+
 - `codebridge-mcp.server.autoStart`: Auto-start on activation (default: true)
 - `codebridge-mcp.server.port`: Preferred server port (default: 9100)
 - `codebridge-mcp.debug.enableLogging`: Debug logging (default: false)
@@ -79,6 +92,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - `codebridge-mcp.failover.*`: Failover and reliability settings
 
 #### 🏗️ Enhanced Features
+
 - **Multi-Folder Workspace Support**: Full `.code-workspace` file support with folder enumeration
 - **Smart Port Management**: Uses 9100-9199 range to avoid dev server conflicts
 - **Workspace-Aware Tool Routing**: Tools automatically route to appropriate instances
@@ -86,6 +100,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 - **Full-Stack Development Support**: Perfect for frontend + backend + mobile development workflows
 
 #### 🔧 Technical Improvements
+
 - **Tool Call Integration**: Coordinator-aware tool registration and execution
 - **Enhanced Error Handling**: Comprehensive error recovery and logging
 - **Type Safety**: Full TypeScript coverage for coordination system
@@ -96,36 +111,43 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 ## Development Phases
 
 ### ✅ Phase 1: Core Architecture
+
 - Multi-instance detection and coordination framework
 - Basic master-worker role assignment
 - Coordination configuration system
 
-### ✅ Phase 2: Tool Routing System  
+### ✅ Phase 2: Tool Routing System
+
 - Workspace-specific, active-context, and aggregated tool strategies
 - Remote tool execution framework
 - Tool call logging and monitoring
 
 ### ✅ Phase 3: Master Coordination
+
 - Master coordinator implementation
 - Worker registration and management
 - Heartbeat and health monitoring system
 
 ### ✅ Phase 4: Worker Coordination & Failover
+
 - Worker coordinator with master registration
 - Leader election algorithm implementation
 - Automatic failover and recovery system
 
 ### ✅ Phase 5: Integration & Testing
-- VSCode command integration  
+
+- VSCode command integration
 - End-to-end coordination testing
 - Port conflict resolution and workspace detection fixes
 
 ### 🚧 Phase 6: Advanced Features (In Progress)
+
 - Performance optimizations
 - Enhanced workspace management
 - Additional coordination features
 
 ### 📋 Future Phases
+
 - Advanced monitoring and analytics
 - Plugin system for custom tools
 - Enhanced security and authentication
@@ -135,6 +157,7 @@ This marks the stable 1.0.0 release of CodeBridge MCP with mature multi-instance
 ## Technical Architecture
 
 ### Multi-Instance Coordination
+
 The extension implements a sophisticated multi-instance coordination system:
 
 1. **Automatic Detection**: First instance becomes master, subsequent instances detect and join as workers
@@ -143,12 +166,14 @@ The extension implements a sophisticated multi-instance coordination system:
 4. **Fault Tolerance**: Graceful handling of instance failures with automatic recovery
 
 ### Port Management
+
 - **Master Port**: 9100 (configurable)
-- **Worker Range**: 9101-9199 (configurable) 
+- **Worker Range**: 9101-9199 (configurable)
 - **Coordination Endpoints**: `/coordination/*` namespace
 - **MCP Endpoints**: `/mcp`, `/health` on main server
 
 ### Workspace Support
+
 - **Single-folder**: Traditional VSCode workspace
 - **Multi-folder**: `.code-workspace` files with full folder enumeration
 - **Cross-instance**: Tools can target specific workspaces or aggregate across all instances
@@ -160,15 +185,18 @@ The extension implements a sophisticated multi-instance coordination system:
 ### From 0.1.x to 0.2.x
 
 #### Configuration Changes
+
 - Default port changed from `3000` to `9100`
 - Added coordination configuration section
 - Enhanced workspace detection for multi-folder workspaces
 
 #### New Features
-- Multi-instance support (automatic)  
+
+- Multi-instance support (automatic)
 - Enhanced `get_workspaces` tool
 - New coordination commands in Command Palette
 
 #### Breaking Changes
+
 - Port configuration may need updating if you've customized it
 - Tool responses may include additional workspace context information
