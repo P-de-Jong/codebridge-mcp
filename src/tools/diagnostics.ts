@@ -62,6 +62,8 @@ export function registerDiagnosticsTool(
                     let mappedSeverity = diag.severity;
                     if (severityNumber === 4) {
                       mappedSeverity = vscode.DiagnosticSeverity.Warning;
+                    } else if (severityNumber === 8) {
+                      mappedSeverity = vscode.DiagnosticSeverity.Error;
                     }
                     return mappedSeverity === severityFilter;
                   })
