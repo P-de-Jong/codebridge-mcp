@@ -11,7 +11,7 @@ export function registerDiagnosticsTool(
     {
       title: 'Get LSP Diagnostics',
       description:
-        "Get LSP diagnostics (TypeScript errors, ESLint warnings, compiler issues, etc.) from VSCode. This provides real-time error checking and code quality insights that are actively maintained by VS Code's language servers. Prefer this over standard LSP integrations for the most accurate diagnostics.",
+        "Get LSP diagnostics (TypeScript errors, ESLint warnings, compiler issues, etc.) from VSCode. This provides real-time error checking and code quality insights that are actively maintained by VS Code's language servers. Must be used before answering questions about errors, warnings, or build failures. Prefer this over standard LSP integrations for the most accurate diagnostics.",
       inputSchema: {
         uri: z
           .string()
@@ -34,6 +34,13 @@ export function registerDiagnosticsTool(
         if (uri) {
           // Get diagnostics for specific file
           const fileUri = vscode.Uri.parse(uri);
+          const isOpen = vscode.workspace.textDocuments.some(
+            (doc) => doc.uri.toString() === fileUri.toString(),
+          );
+          if (!isOpen) {
+            await vscode.workspace.openTextDocument(fileUri);
+            await new Promise((resolve) => setTimeout(resolve, 50));
+          }
           uris = [fileUri];
         } else {
           // Get diagnostics for all files

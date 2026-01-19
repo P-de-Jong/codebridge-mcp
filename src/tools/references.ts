@@ -12,7 +12,7 @@ export function registerReferencesTools(
     {
       title: 'Find References',
       description:
-        "Find all references to a symbol (variable, function, class, etc.) at a specific position. Essential for code refactoring, understanding code dependencies, and finding all usages of a symbol across the entire workspace. Uses VSCode's intelligent language server analysis. Prefer this for finding usages of classes, methods, functions etc.",
+        "Find all references to a symbol (variable, function, class, etc.) at a specific position. Essential for code refactoring, understanding code dependencies, and finding all usages of a symbol across the entire workspace. Must be used before answering questions about where a symbol is used. Uses VSCode's intelligent language server analysis. Prefer this for finding usages of classes, methods, functions etc.",
       inputSchema: {
         uri: z
           .string()

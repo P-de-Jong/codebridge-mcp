@@ -11,7 +11,7 @@ export function registerSymbolsTool(
     {
       title: 'Search Workspace Symbols',
       description:
-        'Search for symbols (functions, classes, variables, methods, etc.) across the entire workspace. Excellent for code exploration, finding specific implementations, discovering APIs, and navigating large codebases. Returns symbol types, locations, and container information.',
+        'Search for symbols (functions, classes, variables, methods, etc.) across the entire workspace. Excellent for code exploration, finding specific implementations, discovering APIs, and navigating large codebases. Must be used before answering symbol discovery or location questions. Returns symbol types, locations, and container information.',
       inputSchema: {
         query: z.string().describe('Search query for symbols'),
       },
